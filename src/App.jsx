@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Shuffle, Edit, Trash2, Settings, X, Lock } from 'lucide-react';
+import { Shuffle, Settings, Lock, Users, LayoutDashboard, X } from 'lucide-react';
 
 const Button = ({ className = '', children, ...props }) => (
   <button className={`bg-violet-600 hover:bg-violet-500 px-4 py-2 rounded-xl font-medium ${className}`} {...props}>
@@ -8,13 +8,13 @@ const Button = ({ className = '', children, ...props }) => (
   </button>
 );
 
-const funnySuffixes = ['海賊団','秘密結社','温泉同好会','革命軍','騎士団','研究所','最終防衛隊','帝国'];
-
 const Avatar = ({ src }) => (
-  <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
+  <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 flex-shrink-0">
     <img src={src} className="w-full h-full object-cover" />
   </div>
 );
+
+const funnySuffixes = ['海賊団','秘密結社','温泉同好会','革命軍','騎士団','研究所','最終防衛隊','帝国'];
 
 export default function TeamShuffleApp() {
   const [members, setMembers] = useState([]);
@@ -24,29 +24,11 @@ export default function TeamShuffleApp() {
   const [passwordInput, setPasswordInput] = useState('');
   const adminPassword = 'team123';
 
-  const [adminOpen, setAdminOpen] = useState(false);
-
-  const [newName, setNewName] = useState('');
-  const [newNicknames, setNewNicknames] = useState('');
-  const [newAvatar, setNewAvatar] = useState('');
-  const [editingId, setEditingId] = useState(null);
-
-  const [teamCount, setTeamCount] = useState(2);
+  const [view, setView] = useState('dashboard'); // SaaS化
   const [isShuffling, setIsShuffling] = useState(false);
+  const [shuffleKey, setShuffleKey] = useState(0);
 
-  /* ================= AUTH ================= */
-  const loginAdmin = () => {
-    if (passwordInput === adminPassword) {
-      setAdminMode(true);
-      setPasswordInput('');
-    } else {
-      alert('パスワードが違います');
-    }
-  };
-
-  const logoutAdmin = () => setAdminMode(false);
-
-  /* ================= LOAD / SAVE ================= */
+  /* ================= LOAD ================= */
   useEffect(() => {
     const saved = localStorage.getItem('teamShuffleMembers');
     if (saved) setMembers(JSON.parse(saved));
@@ -57,195 +39,116 @@ export default function TeamShuffleApp() {
   }, [members]);
 
   const activeMembers = useMemo(() => members.filter(m => m.active), [members]);
-  const inactiveMembers = useMemo(() => members.filter(m => !m.active), [members]);
 
-  /* ================= MEMBER ================= */
-  const saveMember = () => {
-    if (!newName) return;
-
-    const member = {
-      id: editingId || Date.now(),
-      baseName: newName,
-      nicknames: newNicknames.split(',').map(n => n.trim()).filter(Boolean),
-      avatar: newAvatar || 'https://cdn.discordapp.com/embed/avatars/4.png',
-      active: true
-    };
-
-    setMembers(prev => {
-      if (editingId) return prev.map(m => m.id === editingId ? member : m);
-      return [...prev, member];
-    });
-
-    setNewName('');
-    setNewNicknames('');
-    setNewAvatar('');
-    setEditingId(null);
+  /* ================= AUTH ================= */
+  const login = () => {
+    if (passwordInput === adminPassword) setAdminMode(true);
   };
 
-  const startEdit = (m) => {
-    setEditingId(m.id);
-    setNewName(m.baseName);
-    setNewNicknames(m.nicknames.join(','));
-    setNewAvatar(m.avatar);
-    setAdminOpen(true);
-  };
-
-  const deleteMember = (id) => {
-    setMembers(prev => prev.filter(m => m.id !== id));
-  };
-
-  /* ================= SHUFFLE (FIXED ANIMATION) ================= */
+  /* ================= GAME SHUFFLE (roulette feel) ================= */
   const createTeams = () => {
     setIsShuffling(true);
-    setTeams(null); // ← 重要：一度消す（アニメ発火用）
+    setTeams(null);
+
+    let counter = 0;
+    const interval = setInterval(() => {
+      counter++;
+      setShuffleKey(counter);
+    }, 120);
 
     setTimeout(() => {
+      clearInterval(interval);
+
       const shuffled = [...activeMembers].sort(() => Math.random() - 0.5);
+      const mid = Math.ceil(shuffled.length / 2);
 
-      const teamsArr = Array.from({ length: teamCount }, () => []);
+      const teamA = shuffled.slice(0, mid);
+      const teamB = shuffled.slice(mid);
 
-      shuffled.forEach((m, i) => {
-        teamsArr[i % teamCount].push({
-          ...m,
-          displayName: m.nicknames[Math.floor(Math.random() * m.nicknames.length)]
-        });
+      setTeams({
+        a: teamA,
+        b: teamB
       });
 
-      const result = {};
-
-      teamsArr.forEach((t, idx) => {
-        const leader = t[Math.floor(Math.random() * t.length)] || {};
-        result[`t${idx}`] = {
-          name: `${leader.displayName || 'Team'} ${funnySuffixes[idx % funnySuffixes.length]}`,
-          members: t,
-          leader: leader.id
-        };
-      });
-
-      setTeams(result);
       setIsShuffling(false);
-    }, 700);
+    }, 1200);
   };
 
-  return (
-    <div className="min-h-screen bg-slate-950 text-white p-6">
+  /* ================= SaaS SIDEBAR ================= */
+  const Sidebar = () => (
+    <div className="w-64 bg-slate-900 h-screen p-4 space-y-3">
+      <h1 className="text-xl font-bold mb-4">Shuffle SaaS</h1>
 
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Team Shuffle Pro</h1>
+      <button onClick={() => setView('dashboard')} className="flex items-center gap-2 w-full p-2 rounded bg-slate-800">
+        <LayoutDashboard size={16}/> Dashboard
+      </button>
 
-        <div className="flex gap-2 items-center">
+      <button onClick={() => setView('members')} className="flex items-center gap-2 w-full p-2 rounded bg-slate-800">
+        <Users size={16}/> Members
+      </button>
 
-          {/* team count */}
-          <select value={teamCount} onChange={e => setTeamCount(Number(e.target.value))} className="bg-slate-800 p-2 rounded">
-            {[2,3,4,5,6].map(n => <option key={n}>{n} Teams</option>)}
-          </select>
+      <button onClick={() => setView('shuffle')} className="flex items-center gap-2 w-full p-2 rounded bg-slate-800">
+        <Shuffle size={16}/> Shuffle
+      </button>
 
-          {/* admin auth */}
-          {!adminMode ? (
-            <div className="flex gap-2">
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={e => setPasswordInput(e.target.value)}
-                placeholder="admin password"
-                className="bg-slate-800 px-2 rounded"
-              />
-              <Button onClick={loginAdmin}>
-                <Lock size={16} />
-              </Button>
-            </div>
-          ) : (
-            <Button onClick={logoutAdmin}>
-              Admin ON
+      <div className="pt-4 border-t border-slate-700">
+        {!adminMode ? (
+          <div className="space-y-2">
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={e => setPasswordInput(e.target.value)}
+              className="w-full p-2 bg-slate-800 rounded"
+              placeholder="admin"
+            />
+            <Button onClick={login} className="w-full flex items-center justify-center gap-2">
+              <Lock size={16}/> Login
             </Button>
-          )}
-
-          {adminMode && (
-            <Button onClick={() => setAdminOpen(true)}>
-              <Settings size={16} />
-            </Button>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="text-green-400 text-sm">Admin ON</div>
+        )}
       </div>
+    </div>
+  );
 
-      {/* MEMBERS */}
-      <div className="grid md:grid-cols-2 gap-4">
+  /* ================= GAME VIEW ================= */
+  const ShuffleView = () => (
+    <div className="flex flex-col items-center justify-center h-full">
 
-        <div>
-          <h2 className="text-green-300 font-bold mb-2">Active</h2>
+      <motion.div
+        key={shuffleKey}
+        animate={{ rotate: isShuffling ? 360 : 0, scale: isShuffling ? 1.1 : 1 }}
+        transition={{ duration: 0.4 }}
+        className="text-3xl font-bold mb-6"
+      >
+        🎲 Shuffle Mode
+      </motion.div>
 
-          <AnimatePresence>
-            {activeMembers.map(m => (
-              <motion.div
-                key={m.id}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="flex justify-between items-center bg-slate-800 p-3 rounded-xl mb-2"
-              >
-                <div className="flex items-center gap-3">
-                  <Avatar src={m.avatar} />
-                  <div>
-                    <div className="font-bold">{m.baseName}</div>
-                    <div className="text-xs text-slate-400">{m.nicknames.join(', ')}</div>
-                  </div>
-                </div>
+      <Button onClick={createTeams} disabled={isShuffling} className="px-6">
+        <Shuffle className="mr-2" />
+        {isShuffling ? 'Shuffling...' : 'Start Shuffle'}
+      </Button>
 
-                {adminMode && (
-                  <div className="flex gap-2">
-                    <button onClick={() => startEdit(m)}><Edit size={16} /></button>
-                    <button onClick={() => deleteMember(m.id)}><Trash2 size={16} /></button>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-
-        <div>
-          <h2 className="text-pink-300 font-bold mb-2">Inactive</h2>
-          {inactiveMembers.map(m => (
-            <div key={m.id} className="flex items-center gap-3 bg-slate-800 p-3 rounded-xl opacity-60">
-              <Avatar src={m.avatar} />
-              <span>{m.baseName}</span>
-            </div>
-          ))}
-        </div>
-
-      </div>
-
-      {/* SHUFFLE */}
-      <div className="flex justify-center mt-6">
-        <Button onClick={createTeams} disabled={isShuffling}>
-          <Shuffle className="mr-2" />
-          {isShuffling ? 'Shuffling...' : 'Shuffle'}
-        </Button>
-      </div>
-
-      {/* TEAMS */}
       <AnimatePresence>
         {teams && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="grid md:grid-cols-3 gap-4 mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="grid grid-cols-2 gap-6 mt-8 w-full max-w-4xl"
           >
-            {Object.values(teams).map((t, i) => (
+            {Object.entries(teams).map(([key, team]) => (
               <motion.div
-                key={i}
-                layout
+                key={key}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="bg-slate-900 p-4 rounded-xl"
               >
-                <h2 className="font-bold mb-2">{t.name}</h2>
-                {t.members.map(m => (
+                <h2 className="font-bold mb-3">Team {key.toUpperCase()}</h2>
+                {team.map(m => (
                   <div key={m.id} className="flex items-center gap-2 py-1">
                     <Avatar src={m.avatar} />
-                    <span>{m.displayName}</span>
+                    <span>{m.baseName}</span>
                   </div>
                 ))}
               </motion.div>
@@ -253,30 +156,48 @@ export default function TeamShuffleApp() {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
 
-      {/* ADMIN PANEL */}
-      {adminOpen && adminMode && (
-        <div className="fixed inset-0 bg-black/60 flex justify-end">
-          <div className="w-96 bg-slate-900 p-4">
-            <h2 className="font-bold mb-2">Admin Panel</h2>
+  /* ================= DASHBOARD ================= */
+  const Dashboard = () => (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
 
-            <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="name" className="w-full p-2 mb-2 bg-slate-800" />
-            <input value={newNicknames} onChange={e => setNewNicknames(e.target.value)} placeholder="nicknames" className="w-full p-2 mb-2 bg-slate-800" />
-
-            <input type="file" accept="image/*" onChange={e => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              const r = new FileReader();
-              r.onload = () => setNewAvatar(r.result);
-              r.readAsDataURL(file);
-            }} />
-
-            <Button className="mt-2 w-full" onClick={saveMember}>
-              Save
-            </Button>
-          </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-slate-900 p-4 rounded-xl">
+          <div className="text-sm text-slate-400">Total Members</div>
+          <div className="text-2xl font-bold">{members.length}</div>
         </div>
-      )}
+
+        <div className="bg-slate-900 p-4 rounded-xl">
+          <div className="text-sm text-slate-400">Active</div>
+          <div className="text-2xl font-bold">{activeMembers.length}</div>
+        </div>
+
+        <div className="bg-slate-900 p-4 rounded-xl">
+          <div className="text-sm text-slate-400">Teams Ready</div>
+          <div className="text-2xl font-bold">{teams ? Object.keys(teams).length : 0}</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  /* ================= MAIN ================= */
+  return (
+    <div className="flex bg-slate-950 text-white h-screen">
+
+      <Sidebar />
+
+      <div className="flex-1 overflow-auto">
+        {view === 'dashboard' && <Dashboard />}
+        {view === 'shuffle' && <ShuffleView />}
+        {view === 'members' && (
+          <div className="p-6 text-slate-300">
+            メンバー管理は次フェーズで拡張（CRUD UI追加予定）
+          </div>
+        )}
+      </div>
 
     </div>
   );
