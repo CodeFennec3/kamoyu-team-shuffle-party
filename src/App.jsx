@@ -27,7 +27,7 @@ const Button = ({ className = '', children, ...props }) => (
 );
 
 const Avatar = ({ src }) => (
-  <div className="w-24 h-24 min-w-24 min-h-24 max-w-24 max-h-24 rounded-full overflow-hidden bg-slate-700 border-2 border-slate-600 mx-auto">
+  <div className="w-[96px] h-[96px] min-w-[96px] min-h-[96px] max-w-[96px] max-h-[96px] rounded-full overflow-hidden bg-slate-700 border-2 border-slate-600 mx-auto">
     <img
       src={src}
       alt="avatar"
@@ -114,7 +114,7 @@ export default function TeamShuffleApp() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6 mb-10 justify-items-center">
+        <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mb-10 place-items-center w-full">
           {members.filter((m) => m.active).map((m) => (
             <div key={m.id} className="text-center w-28">
               <Avatar src={m.avatar} />
