@@ -170,11 +170,36 @@ export default function TeamShuffleApp() {
         )
 
         {screen === 'result' && teams && (
-          <div className="text-center mb-8 text-6xl">🎉</div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {Object.entries(teams).map(([key, team]) => (
-              <div key={key} className="bg-slate-900 p-6 rounded-2xl">
-                <h2 className="text-2xl font-bold mb-4">Team {key.toUpperCase()}</h2>
+          <>
+            <div className="text-center mb-8 text-6xl">🎉</div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {Object.entries(teams).map(([key, team]) => (
+                <div key={key} className="bg-slate-900 p-6 rounded-2xl">
+                  <h2 className="text-2xl font-bold mb-4">Team {key.toUpperCase()}</h2>
+                  <div className="space-y-3">
+                    {team.map((m) => (
+                      <div key={m.id} className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-700">
+                          <img src={m.avatar} alt="avatar" className="w-full h-full object-cover" />
+                        </div>
+                        <span>{m.baseName}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-center gap-4 mt-10">
+              <Button onClick={startShuffle}>
+                <Shuffle size={16} /> もう一回シャッフル
+              </Button>
+              <Button onClick={() => setScreen('lobby')} className="bg-slate-700 hover:bg-slate-600">
+                最初に戻る
+              </Button>
+            </div>
+          </>
+        )}</h2>
                 <div className="space-y-3">
                   {team.map((m) => (
                     <div key={m.id} className="flex items-center gap-3">
