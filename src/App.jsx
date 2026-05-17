@@ -114,9 +114,28 @@ export default function TeamShuffleApp() {
           </div>
         )}
 
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mb-10 place-items-center w-full">
+        <div
+          className="mb-10"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(8, minmax(0, 1fr))',
+            gap: '16px',
+            width: '100%',
+            justifyItems: 'center',
+            alignItems: 'start'
+          }}
+        >
           {members.filter((m) => m.active).map((m) => (
-            <div key={m.id} className="text-center w-28">
+            <div
+              key={m.id}
+              style={{
+                width: '110px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}
+            >
               <Avatar src={m.avatar} />
               <div className="mt-2 text-sm font-medium truncate">{m.baseName}</div>
               <button
