@@ -36,6 +36,7 @@ export default function TeamShuffleApp() {
   const [members, setMembers] = useState([]);
   const [teams, setTeams] = useState(null);
   const [screen, setScreen] = useState('lobby'); // lobby | shuffling | result
+  const [countdown, setCountdown] = useState(5);
   const [passwordInput, setPasswordInput] = useState('');
   const [adminMode, setAdminMode] = useState(false);
 
@@ -73,11 +74,19 @@ export default function TeamShuffleApp() {
 
   const startShuffle = () => {
     setScreen('shuffling');
+    setCountdown(5);
 
     const shuffled = [...activeMembers].sort(() => Math.random() - 0.5);
     const mid = Math.ceil(shuffled.length / 2);
 
+    let current = 5;
+    const interval = setInterval(() => {
+      current -= 1;
+      setCountdown(current);
+    }, 1000);
+
     setTimeout(() => {
+      clearInterval(interval);
       setTeams({
         a: shuffled.slice(0, mid),
         b: shuffled.slice(mid)
@@ -142,12 +151,26 @@ export default function TeamShuffleApp() {
 
         {screen === 'shuffling' && (
           <div className="text-center py-24">
+            <div className="flex justify-center gap-4 mb-10 flex-wrap">
+              {activeMembers.map((m) => (
+                <div
+                  key={m.id}
+                  className="animate-bounce"
+                  style={{ animationDuration: `${0.8 + Math.random()}s` }}
+                >
+                  <Avatar src={m.avatar} />
+                </div>
+              ))}
+            </div>
+
             <h2 className="text-5xl font-bold animate-pulse">シャッフル中...</h2>
+            <div className="text-7xl font-extrabold mt-6 text-violet-400">{countdown}</div>
             <p className="mt-6 text-slate-400">チームをいい感じに混ぜています</p>
           </div>
-        )}
+        )
 
         {screen === 'result' && teams && (
+          <div className="text-center mb-8 text-6xl">🎉</div>
           <div className="grid md:grid-cols-2 gap-6">
             {Object.entries(teams).map(([key, team]) => (
               <div key={key} className="bg-slate-900 p-6 rounded-2xl">
