@@ -11,6 +11,7 @@ import CaptainScreen from './components/CaptainScreen';
 import TeamNameScreen from './components/TeamNameScreen';
 import DistributionScreen from './components/DistributionScreen';
 import ResultScreen from './components/ResultScreen';
+import ParticlesBackground from './components/ParticlesBackground';
 
 export default function App() {
   const [members, setMembers] = useState([]);
