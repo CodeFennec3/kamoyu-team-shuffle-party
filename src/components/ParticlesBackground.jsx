@@ -16,30 +16,45 @@ export default function ParticlesBackground() {
 
   const options = useMemo(
     () => ({
-      fpsLimit: 60,
+      fullScreen: false,
+  
+      fpsLimit: 30,
+  
+      detectRetina: true,
+  
       particles: {
-        color: {
-          value: "#ffffff",
-        },
-        links: {
-          color: "#ffffff",
-          distance: 120,
-          enable: true,
-          opacity: 0.08,
-          width: 1,
-        },
-        move: {
-          enable: true,
-          speed: 0.02,
-        },
         number: {
-          value: 45,
+          value: 35,
         },
+  
+        color: {
+          value: '#ffffff',
+        },
+
         opacity: {
           value: 0.25,
         },
+
         size: {
-          value: { min: 1, max: 2.5 },
+          value: {
+            min: 1,
+            max: 2,
+          },
+        },
+
+        move: {
+          enable: true,
+          speed: 0.05,
+          direction: 'none',
+          random: true,
+          straight: false,
+          outModes: {
+            default: 'out',
+          },
+        },
+
+        links: {
+          enable: false,
         },
       },
     }),
@@ -52,15 +67,7 @@ export default function ParticlesBackground() {
     <Particles
       id="tsparticles"
       options={options}
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: 0
-      }}
+      className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-70"
     />
   );
 }
