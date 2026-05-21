@@ -30,7 +30,7 @@ export default function ParticlesBackground() {
         },
         move: {
           enable: true,
-          speed: 0.2,
+          speed: 0.02,
         },
         number: {
           value: 45,
