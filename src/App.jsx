@@ -180,10 +180,10 @@ export default function App() {
 
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900" />
 
-      <div className="relative z-10 w-full px-6 py-8">
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-violet-500 rounded-full blur-3xl" />
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-violet-500/30 rounded-full blur-3xl" />
 
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-30 w-full px-6 py-8">

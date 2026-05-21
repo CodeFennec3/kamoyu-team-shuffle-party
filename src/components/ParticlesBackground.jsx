@@ -22,11 +22,7 @@ export default function ParticlesBackground() {
           value: "#ffffff",
         },
         links: {
-          color: "#ffffff",
-          distance: 150,
-          enable: true,
-          opacity: 0.15,
-          width: 1,
+          enable: false,
         },
         move: {
           enable: true,
