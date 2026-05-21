@@ -22,20 +22,24 @@ export default function ParticlesBackground() {
           value: "#ffffff",
         },
         links: {
-          enable: false,
+          color: "#ffffff",
+          distance: 120,
+          enable: true,
+          opacity: 0.08,
+          width: 1,
         },
         move: {
           enable: true,
-          speed: 1,
+          speed: 0.2,
         },
         number: {
-          value: 60,
+          value: 45,
         },
         opacity: {
-          value: 0.3,
+          value: 0.25,
         },
         size: {
-          value: { min: 1, max: 3 },
+          value: { min: 1, max: 2.5 },
         },
       },
     }),
@@ -49,6 +53,14 @@ export default function ParticlesBackground() {
       id="tsparticles"
       options={options}
       className="absolute inset-0 pointer-events-none"
+      style={{
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 0
+      }}
     />
   );
 }
