@@ -1,6 +1,4 @@
-<h1 className="text-red-500 text-9xl">
-  TEST
-</h1>
+
 export default function HomeScreen({
   passwordInput,
   setPasswordInput,
@@ -8,6 +6,10 @@ export default function HomeScreen({
   startViewer
 }) {
   return (
+  <div>
+    <h1 className="text-red-500 text-9xl">
+      TEST
+    </h1>
     <div className="flex flex-col items-center">
       <button
         onClick={startViewer}
