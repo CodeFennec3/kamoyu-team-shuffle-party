@@ -175,8 +175,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen text-white overflow-hidden relative">
-      {/* <ParticlesBackground /> */}
+    <div className="min-h-screen text-white overflow-hidden relative isolate">
+      <ParticlesBackground />
 
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900" />
 
@@ -186,7 +186,7 @@ export default function App() {
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-20 w-full px-6 py-8">
+      <div className="relative z-30 w-full px-6 py-8">
         <h1 className="text-6xl font-extrabold text-center mb-14 tracking-wide drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]">
           かもゆとゆかいな仲間たちをまぜまぜ
         </h1>
