@@ -5,6 +5,7 @@ import { db, ROOM_ID } from './firebase';
 import { shuffleArray } from './utils/shuffle';
 import { generateTeamName } from './utils/teamNameGenerator';
 
+import HomeScreen from './components/HomeScreen';
 import LobbyScreen from './components/LobbyScreen';
 import IntroScreen from './components/IntroScreen';
 import CaptainScreen from './components/CaptainScreen';
@@ -16,7 +17,12 @@ import ParticlesBackground from './components/ParticlesBackground';
 export default function App() {
   const [members, setMembers] = useState([]);
   const [teams, setTeams] = useState(null);
-  const [screen, setScreen] = useState('lobby');
+
+  const [screen, setScreen] = useState('home');
+
+  const [passwordInput, setPasswordInput] = useState('');
+
+  const ADMIN_PASSWORD = 'team123';
 
   const [captainA, setCaptainA] = useState(null);
   const [captainB, setCaptainB] = useState(null);
@@ -75,6 +81,18 @@ export default function App() {
           : m
       )
     );
+  };
+
+  const enterAdmin = () => {
+    if (passwordInput === ADMIN_PASSWORD) {
+      setScreen('lobby');
+    } else {
+      alert('パスワードが違います');
+    }
+  };
+
+  const startViewer = () => {
+    setScreen('lobby');
   };
 
   const startShuffle = () => {
@@ -158,6 +176,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-white overflow-hidden relative">
+      <ParticlesBackground />
+
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900" />
 
       <div className="absolute inset-0 opacity-20">
@@ -171,9 +191,18 @@ export default function App() {
           かもゆとゆかいな仲間たちをまぜまぜ
         </h1>
 
+        {screen === 'home' && (
+          <HomeScreen
+            passwordInput={passwordInput}
+            setPasswordInput={setPasswordInput}
+            enterAdmin={enterAdmin}
+            startViewer={startViewer}
+          />
+        )}
+
         {screen === 'lobby' && (
           <LobbyScreen
-            members={activeMembers}
+            members={members}
             toggleActive={toggleActive}
             startShuffle={startShuffle}
           />
