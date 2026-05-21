@@ -178,9 +178,9 @@ export default function App() {
     <div className="min-h-screen text-white overflow-hidden relative isolate">
       <ParticlesBackground />
 
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900" />
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900" />
 
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 -z-10 opacity-20">
         <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-violet-500 rounded-full blur-3xl" />
 
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500 rounded-full blur-3xl" />

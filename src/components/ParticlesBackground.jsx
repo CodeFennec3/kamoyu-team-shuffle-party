@@ -57,7 +57,7 @@ export default function ParticlesBackground() {
     <Particles
       id="tsparticles"
       options={options}
-      className="absolute inset-0 -z-10"
+      className="absolute inset-0 -z-30"
     />
   );
 }
