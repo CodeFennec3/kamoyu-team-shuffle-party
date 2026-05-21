@@ -1,4 +1,3 @@
-START TEST 999
 export default function HomeScreen({
   passwordInput,
   setPasswordInput,
@@ -28,6 +27,7 @@ export default function HomeScreen({
           tracking-[12px]
 
           shadow-[0_0_120px_rgba(34,211,238,0.9)]
+          animate-pulse
 
           hover:scale-105
           active:scale-95
@@ -68,19 +68,21 @@ export default function HomeScreen({
         </span>
       </button>
 
-      <div className="mt-64 flex items-center gap-5 opacity-60">
+      <div className="mt-20 flex items-center gap-4 opacity-70">
         <button
           onClick={enterAdmin}
           className="
-            px-6
-            py-3
+            px-5
+            py-2
             rounded-xl
-            bg-slate-800
+            bg-slate-900/80
             border
-            border-slate-600
-            text-sm
+            border-cyan-400/40
+            text-xs
             font-bold
-            hover:bg-slate-700
+            hover:bg-slate-800
+            hover:border-cyan-300
+            transition-all
           "
         >
           ADMIN
@@ -92,8 +94,9 @@ export default function HomeScreen({
           onChange={(e) => setPasswordInput(e.target.value)}
           placeholder="password"
           className="
+            w-[180px]
             px-4
-            py-3
+            py-2
             rounded-xl
             bg-slate-900/80
             border
