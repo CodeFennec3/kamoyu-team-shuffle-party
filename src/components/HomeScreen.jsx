@@ -13,32 +13,14 @@ export default function HomeScreen({
           group
           relative
 
-          w-[700px]
-          h-[220px]
+          w-[200px]
+          h-[80px]
 
-          rounded-[48px]
+          bg-red-500
 
-          bg-gradient-to-br
-          from-cyan-300
-          via-sky-400
-          to-violet-500
-
-          text-[110px]
-          font-black
-          tracking-[12px]
-
-          shadow-[0_0_120px_rgba(34,211,238,0.9)]
-          animate-pulse
-
-          hover:scale-105
-          active:scale-95
-
-          transition-all
-          duration-300
-
-          overflow-hidden
+          text-[40px]
         "
-      >
+        >
         <div
           className="
             absolute
