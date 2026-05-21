@@ -68,7 +68,7 @@ export default function HomeScreen({
         </span>
       </button>
 
-      <div className="mt-20 flex items-center gap-4 opacity-70">
+      <div className="mt-40 flex items-center gap-4 opacity-70">
         <button
           onClick={enterAdmin}
           className="

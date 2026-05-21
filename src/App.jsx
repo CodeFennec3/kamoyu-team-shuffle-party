@@ -191,7 +191,7 @@ export default function App() {
           text-6xl
           font-extrabold
           text-center
-          mb-4
+          mb-32
           tracking-wide
           drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]
         ">
