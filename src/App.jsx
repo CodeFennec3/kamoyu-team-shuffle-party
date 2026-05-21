@@ -176,7 +176,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-white overflow-hidden relative">
-      <ParticlesBackground />
+      {/* <ParticlesBackground /> */}
 
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900" />
 
