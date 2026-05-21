@@ -5,7 +5,7 @@ export default function HomeScreen({
   startViewer
 }) {
   return (
-    <div className="h-[75vh] flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center">
       <button
         onClick={startViewer}
         className="
