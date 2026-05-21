@@ -187,7 +187,15 @@ export default function App() {
       </div>
 
       <div className="relative z-30 w-full px-6 py-8">
-        <h1 className="text-6xl font-extrabold text-center mb-14 tracking-wide drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]">
+        <h1 className="
+          text-6xl
+          font-extrabold
+          text-center
+          pt-8
+          mb-6
+          tracking-wide
+          drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]
+        ">
           かもゆとゆかいな仲間たちをまぜまぜ
         </h1>
 

@@ -9,25 +9,65 @@ export default function HomeScreen({
       <button
         onClick={startViewer}
         className="
-          px-24
-          py-10
-          rounded-[32px]
-          bg-gradient-to-r
-          from-cyan-400
+          group
+          relative
+
+          w-[700px]
+          h-[260px]
+
+          rounded-[48px]
+
+          bg-gradient-to-br
+          from-cyan-300
+          via-sky-400
           to-violet-500
-          text-6xl
+
+          text-[110px]
           font-black
-          tracking-[6px]
-          shadow-[0_0_60px_rgba(139,92,246,0.8)]
+          tracking-[12px]
+
+          shadow-[0_0_120px_rgba(34,211,238,0.9)]
+
           hover:scale-105
+          active:scale-95
+
           transition-all
           duration-300
+
+          overflow-hidden
         "
       >
-        START
+        <div
+          className="
+            absolute
+            inset-0
+            bg-white/20
+            opacity-0
+            group-hover:opacity-100
+            transition-all
+            duration-300
+          "
+        />
+
+        <div
+          className="
+            absolute
+            -top-20
+            -left-20
+            w-72
+            h-72
+            bg-white/30
+            rounded-full
+            blur-3xl
+          "
+        />
+
+        <span className="relative z-10">
+          START
+        </span>
       </button>
 
-      <div className="mt-40 flex items-center gap-4 opacity-70">
+      <div className="mt-64 flex items-center gap-5 opacity-60">
         <button
           onClick={enterAdmin}
           className="
