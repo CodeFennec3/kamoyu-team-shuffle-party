@@ -13,7 +13,7 @@ export default function HomeScreen({
           relative
 
           w-[700px]
-          h-[260px]
+          h-[220px]
 
           rounded-[48px]
 

@@ -186,13 +186,12 @@ export default function App() {
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-30 w-full px-6 py-8">
+      <div className="relative z-30 w-full px-6 pt-8">
         <h1 className="
           text-6xl
           font-extrabold
           text-center
-          pt-8
-          mb-6
+          mb-4
           tracking-wide
           drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]
         ">
