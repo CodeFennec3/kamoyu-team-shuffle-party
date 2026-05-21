@@ -16,7 +16,10 @@ export default function ParticlesBackground() {
 
   const options = useMemo(
     () => ({
-      fullScreen: false,
+      fullScreen: {
+        enable: true,
+        zIndex: 0,
+      },
   
       fpsLimit: 30,
   
@@ -67,7 +70,7 @@ export default function ParticlesBackground() {
     <Particles
       id="tsparticles"
       options={options}
-      className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-70"
+      className="pointer-events-none opacity-70"
     />
   );
 }
