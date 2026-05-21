@@ -16,11 +16,6 @@ export default function ParticlesBackground() {
 
   const options = useMemo(
     () => ({
-      background: {
-        color: {
-          value: "#0f172a",
-        },
-      },
       fpsLimit: 60,
       particles: {
         color: {
