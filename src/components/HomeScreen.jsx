@@ -1,3 +1,6 @@
+<h1 className="text-red-500 text-9xl">
+  TEST
+</h1>
 export default function HomeScreen({
   passwordInput,
   setPasswordInput,
