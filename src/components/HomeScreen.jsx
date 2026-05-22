@@ -11,7 +11,7 @@ export default function HomeScreen({
       <button
         style={{
           width: "900px",
-          height: "300px"
+          height: "300px",
           background: "red",
           fontSize: "150px"
         }}
