@@ -8,15 +8,8 @@ export default function HomeScreen({
   return (
     <div className="flex flex-col items-center">
 
-      <button
-        style={{
-          width: "900px",
-          height: "300px",
-          background: "red",
-          fontSize: "150px"
-        }}
-      >
-          START
+      <button className="bg-blue-500 text-white p-10">
+        TEST
       </button>
 
       <div className="mt-40 flex items-center gap-4 opacity-70">
