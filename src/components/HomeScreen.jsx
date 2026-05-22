@@ -7,48 +7,8 @@ export default function HomeScreen({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <button
-        onClick={startViewer}
-        className="
-          group
-          relative
-
-          w-[200px]
-          h-[80px]
-
-          bg-red-500
-
-          text-[40px]
-        "
-        >
-        <div
-          className="
-            absolute
-            inset-0
-            bg-white/20
-            opacity-0
-            group-hover:opacity-100
-            transition-all
-            duration-300
-          "
-        />
-
-        <div
-          className="
-            absolute
-            -top-20
-            -left-20
-            w-72
-            h-72
-            bg-white/30
-            rounded-full
-            blur-3xl
-          "
-        />
-
-        <span className="relative z-10">
-          START
-        </span>
+      <button>
+        AAAAA
       </button>
 
       <div className="mt-40 flex items-center gap-4 opacity-70">
