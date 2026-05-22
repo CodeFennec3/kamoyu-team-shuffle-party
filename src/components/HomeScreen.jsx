@@ -7,7 +7,14 @@ export default function HomeScreen({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <button>
+      <button
+        className="
+          w-[200px]
+          h-[80px]
+          bg-red-500
+          text-[40px]
+        "
+      >
         AAAAA
       </button>
 
