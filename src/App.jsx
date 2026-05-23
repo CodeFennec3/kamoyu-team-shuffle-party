@@ -1,258 +1,297 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { useEffect, useState } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "./firebase";
 
-import { db, ROOM_ID } from './firebase';
-import { shuffleArray } from './utils/shuffle';
-import { generateTeamName } from './utils/teamNameGenerator';
+import HomeScreen from "./components/HomeScreen";
+import LobbyScreen from "./components/LobbyScreen";
+import IntroScreen from "./components/IntroScreen";
+import CaptainSlotScreen from "./components/CaptainSlotScreen";
+import CaptainScreen from "./components/CaptainScreen";
+import TeamNameScreen from "./components/TeamNameScreen";
+import DistributionScreen from "./components/DistributionScreen";
+import FightScreen from "./components/FightScreen";
+import ResultScreen from "./components/ResultScreen";
+import ParticlesBackground from "./components/ParticlesBackground";
+import AdminScreen from "./components/AdminScreen";
 
-import HomeScreen from './components/HomeScreen';
-import LobbyScreen from './components/LobbyScreen';
-import IntroScreen from './components/IntroScreen';
-import CaptainScreen from './components/CaptainScreen';
-import TeamNameScreen from './components/TeamNameScreen';
-import DistributionScreen from './components/DistributionScreen';
-import ResultScreen from './components/ResultScreen';
-import ParticlesBackground from './components/ParticlesBackground';
+import { shuffleArray } from "./utils/shuffle";
+import { generateTeamName } from "./utils/teamNameGenerator";
+import { teamThemes } from "./utils/teamThemes";
 
 export default function App() {
+  const [screen, setScreen] = useState("home");
+
   const [members, setMembers] = useState([]);
-  const [teams, setTeams] = useState(null);
 
-  const [screen, setScreen] = useState('home');
+  /* =========================
+     ローカル不参加管理
+  ========================= */
+  const [inactiveIds, setInactiveIds] = useState([]);
 
-  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState("");
 
-  const ADMIN_PASSWORD = 'team123';
+  const [battleData, setBattleData] = useState({
+    teams: { a: [], b: [] },
 
-  const [captainA, setCaptainA] = useState(null);
-  const [captainB, setCaptainB] = useState(null);
+    captains: {
+      a: null,
+      b: null,
+    },
 
-  const [teamNames, setTeamNames] = useState({
-    a: '',
-    b: ''
+    teamNames: {
+      a: "",
+      b: "",
+    },
+
+    theme: null,
   });
 
-  const [animatedTeams, setAnimatedTeams] = useState({
-    a: [],
-    b: []
-  });
-
-  const isInitialLoad = useRef(true);
-
+  /* =========================
+     Firebase
+  ========================= */
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, 'rooms', ROOM_ID), (snap) => {
-      const data = snap.exists() ? snap.data() : null;
+    const unsub = onSnapshot(collection(db, "members"), (snap) => {
+      const list = snap.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      }));
 
-      setMembers(data?.members ?? []);
-
-      isInitialLoad.current = false;
+      setMembers(list);
     });
 
     return () => unsub();
   }, []);
 
-  useEffect(() => {
-    if (isInitialLoad.current) return;
+  /* ========================= */
 
-    const timeout = setTimeout(() => {
-      setDoc(
-        doc(db, 'rooms', ROOM_ID),
-        {
-          members,
-          updatedAt: Date.now()
-        },
-        { merge: true }
-      );
-    }, 300);
+  const wait = (ms) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-    return () => clearTimeout(timeout);
-  }, [members]);
+  /* ========================= */
 
-  const activeMembers = useMemo(
-    () => members.filter((m) => m.active),
-    [members]
-  );
-
-  const toggleActive = (id) => {
-    setMembers((prev) =>
-      prev.map((m) =>
-        m.id === id
-          ? { ...m, active: !m.active }
-          : m
-      )
-    );
-  };
+  const startViewer = () => setScreen("lobby");
 
   const enterAdmin = () => {
-    if (passwordInput === ADMIN_PASSWORD) {
-      setScreen('lobby');
+    if (passwordInput === "admin") {
+      setScreen("admin");
     } else {
-      alert('パスワードが違います');
+      alert("パスワード違う");
     }
   };
 
-  const startViewer = () => {
-    setScreen('lobby');
+  /* =========================
+     不参加切り替え
+  ========================= */
+  const toggleActive = (id) => {
+    setInactiveIds((prev) =>
+      prev.includes(id)
+        ? prev.filter((x) => x !== id)
+        : [...prev, id]
+    );
   };
 
-  const startShuffle = () => {
-    const shuffled = shuffleArray(activeMembers);
+  /* =========================
+     MAIN SHUFFLE
+  ========================= */
+  const startShuffle = async () => {
+    const active = members.filter(
+      (m) => !inactiveIds.includes(m.id)
+    );
 
-    const captain1 = shuffled[0];
-    const captain2 = shuffled[1];
+    if (active.length < 2) {
+      alert("2人以上必要です");
+      return;
+    }
 
-    const remaining = shuffled.slice(2);
+    const shuffled = shuffleArray(active);
 
-    const teamA = [captain1];
-    const teamB = [captain2];
+    const mid = Math.ceil(shuffled.length / 2);
 
-    remaining.forEach((member, index) => {
-      if (index % 2 === 0) {
-        teamA.push(member);
-      } else {
-        teamB.push(member);
-      }
+    const teamA = shuffled.slice(0, mid);
+    const teamB = shuffled.slice(mid);
+
+    const captainA = teamA[0];
+    const captainB = teamB[0];
+
+    const randomTheme =
+      teamThemes[
+        Math.floor(Math.random() * teamThemes.length)
+      ];
+
+    /* =========================
+       チーム名生成（重複防止）
+    ========================= */
+    const teamAData =
+      generateTeamName(captainA.baseName);
+
+    const teamBData =
+      generateTeamName(
+        captainB.baseName,
+        [teamAData.suffix]
+      );
+
+    setBattleData({
+      teams: {
+        a: teamA,
+        b: teamB,
+      },
+
+      captains: {
+        a: captainA,
+        b: captainB,
+      },
+
+      teamNames: {
+        a: teamAData.fullName,
+        b: teamBData.fullName,
+      },
+
+      theme: randomTheme,
     });
 
-    setTeams({
-      a: teamA,
-      b: teamB
-    });
+    /* =========================
+       演出シーケンス
+    ========================= */
 
-    setCaptainA(captain1);
-    setCaptainB(captain2);
+    setScreen("intro");
 
-    setTeamNames({
-      a: generateTeamName(captain1.baseName),
-      b: generateTeamName(captain2.baseName)
-    });
+    await wait(2500);
 
-    setAnimatedTeams({
-      a: [captain1],
-      b: [captain2]
-    });
+    setScreen("captainSlotA");
 
-    setScreen('intro');
+    await wait(2800);
 
-    setTimeout(() => {
-      setScreen('captainA');
-    }, 1500);
+    setScreen("captainRevealA");
 
-    setTimeout(() => {
-      setScreen('captainB');
-    }, 3500);
+    await wait(2200);
 
-    setTimeout(() => {
-      setScreen('teamNames');
-    }, 5500);
+    setScreen("captainSlotB");
 
-    setTimeout(() => {
-      setScreen('distribution');
+    await wait(2800);
 
-      remaining.forEach((member, index) => {
-        setTimeout(() => {
-          setAnimatedTeams((prev) => {
-            const next = {
-              a: [...prev.a],
-              b: [...prev.b]
-            };
+    setScreen("captainRevealB");
 
-            if (index % 2 === 0) {
-              next.a.push(member);
-            } else {
-              next.b.push(member);
-            }
+    await wait(2200);
 
-            return next;
-          });
-        }, index * 900);
-      });
+    setScreen("teamName");
 
-      setTimeout(() => {
-        setScreen('result');
-      }, remaining.length * 900 + 2000);
-    }, 8000);
+    await wait(2500);
+
+    setScreen("distribution");
+
+    await wait(3500);
+
+    setScreen("fight");
+
+    await wait(1800);
+
+    setScreen("result");
   };
 
   return (
-    <div className="min-h-screen text-white overflow-hidden relative">
-      <ParticlesBackground />
+    <div className="relative min-h-screen overflow-hidden text-white">
 
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900" />
+      <ParticlesBackground variant={screen} />
 
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-violet-500/30 rounded-full blur-3xl" />
+      {/* HOME */}
+      {screen === "home" && (
+        <HomeScreen
+          passwordInput={passwordInput}
+          setPasswordInput={setPasswordInput}
+          enterAdmin={enterAdmin}
+          startViewer={startViewer}
+        />
+      )}
 
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-3xl" />
-      </div>
+      {/* LOBBY */}
+      {screen === "lobby" && (
+        <LobbyScreen
+          members={members}
+          inactiveIds={inactiveIds}
+          toggleActive={toggleActive}
+          startShuffle={startShuffle}
+        />
+      )}
 
-      <div className="relative z-30 w-full px-6 pt-8">
-        <h1 className="
-          text-6xl
-          font-extrabold
-          text-center
-          mb-32
-          tracking-wide
-          drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]
-        ">
-          かもゆとゆかいな仲間たちをまぜまぜ
-        </h1>
+      {/* INTRO */}
+      {screen === "intro" && <IntroScreen />}
 
-        {screen === 'home' && (
-          <HomeScreen
-            passwordInput={passwordInput}
-            setPasswordInput={setPasswordInput}
-            enterAdmin={enterAdmin}
-            startViewer={startViewer}
-          />
-        )}
+      {/* CAPTAIN SLOT A */}
+      {screen === "captainSlotA" && (
+        <CaptainSlotScreen
+          members={members}
+          finalCaptain={battleData.captains.a}
+          label="一人目のリーダーは.."
+          color={battleData.theme?.a.text}
+        />
+      )}
 
-        {screen === 'lobby' && (
-          <LobbyScreen
-            members={members}
-            toggleActive={toggleActive}
-            startShuffle={startShuffle}
-          />
-        )}
+      {/* CAPTAIN REVEAL A */}
+      {screen === "captainRevealA" && (
+        <CaptainScreen
+          captain={battleData.captains.a}
+          label="一人目のリーダーは"
+          color={battleData.theme?.a.text}
+        />
+      )}
 
-        {screen === 'intro' && <IntroScreen />}
+      {/* CAPTAIN SLOT B */}
+      {screen === "captainSlotB" && (
+        <CaptainSlotScreen
+          members={members}
+          finalCaptain={battleData.captains.b}
+          label="二人目のリーダーは.."
+          color={battleData.theme?.b.text}
+        />
+      )}
 
-        {screen === 'captainA' && captainA && (
-          <CaptainScreen
-            captain={captainA}
-            label="TEAM A LEADER"
-            color="text-cyan-300"
-          />
-        )}
+      {/* CAPTAIN REVEAL B */}
+      {screen === "captainRevealB" && (
+        <CaptainScreen
+          captain={battleData.captains.b}
+          label="二人目のリーダーは"
+          color={battleData.theme?.b.text}
+        />
+      )}
 
-        {screen === 'captainB' && captainB && (
-          <CaptainScreen
-            captain={captainB}
-            label="TEAM B LEADER"
-            color="text-violet-300"
-          />
-        )}
+      {/* TEAM NAME */}
+      {screen === "teamName" && (
+        <TeamNameScreen
+          teamNames={battleData.teamNames}
+        />
+      )}
 
-        {screen === 'teamNames' && (
-          <TeamNameScreen teamNames={teamNames} />
-        )}
+      {/* DISTRIBUTION */}
+      {screen === "distribution" && (
+        <DistributionScreen
+          animatedTeams={battleData.teams}
+          teamNames={battleData.teamNames}
+          captains={battleData.captains}
+          theme={battleData.theme}
+        />
+      )}
 
-        {screen === 'distribution' && (
-          <DistributionScreen
-            animatedTeams={animatedTeams}
-            teamNames={teamNames}
-          />
-        )}
+      {/* FIGHT */}
+      {screen === "fight" && (
+        <FightScreen />
+      )}
 
-        {screen === 'result' && teams && (
-          <ResultScreen
-            teams={teams}
-            teamNames={teamNames}
-            startShuffle={startShuffle}
-            setScreen={setScreen}
-          />
-        )}
-      </div>
+      {/* RESULT */}
+      {screen === "result" && (
+        <ResultScreen
+          teams={battleData.teams}
+          captains={battleData.captains}
+          teamNames={battleData.teamNames}
+          theme={battleData.theme}
+          startShuffle={startShuffle}
+          setScreen={setScreen}
+        />
+      )}
+
+      {/* ADMIN */}
+      {screen === "admin" && (
+        <AdminScreen setScreen={setScreen} />
+      )}
     </div>
   );
 }
