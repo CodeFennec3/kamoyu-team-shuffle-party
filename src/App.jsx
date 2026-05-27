@@ -11,6 +11,7 @@ import TeamNameScreen from "./components/TeamNameScreen";
 import DistributionScreen from "./components/DistributionScreen";
 import FightScreen from "./components/FightScreen";
 import ResultScreen from "./components/ResultScreen";
+import NaokinScreen from "./components/NaokinScreen";
 import ParticlesBackground from "./components/ParticlesBackground";
 import AdminScreen from "./components/AdminScreen";
 
@@ -50,14 +51,17 @@ export default function App() {
      Firebase
   ========================= */
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "members"), (snap) => {
-      const list = snap.docs.map((d) => ({
-        id: d.id,
-        ...d.data(),
-      }));
+    const unsub = onSnapshot(
+      collection(db, "members"),
+      (snap) => {
+        const list = snap.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+        }));
 
-      setMembers(list);
-    });
+        setMembers(list);
+      }
+    );
 
     return () => unsub();
   }, []);
@@ -65,11 +69,14 @@ export default function App() {
   /* ========================= */
 
   const wait = (ms) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+    new Promise((resolve) =>
+      setTimeout(resolve, ms)
+    );
 
   /* ========================= */
 
-  const startViewer = () => setScreen("lobby");
+  const startViewer = () =>
+    setScreen("lobby");
 
   const enterAdmin = () => {
     if (passwordInput === "admin") {
@@ -105,7 +112,9 @@ export default function App() {
 
     const shuffled = shuffleArray(active);
 
-    const mid = Math.ceil(shuffled.length / 2);
+    const mid = Math.ceil(
+      shuffled.length / 2
+    );
 
     const teamA = shuffled.slice(0, mid);
     const teamB = shuffled.slice(mid);
@@ -115,14 +124,18 @@ export default function App() {
 
     const randomTheme =
       teamThemes[
-        Math.floor(Math.random() * teamThemes.length)
+        Math.floor(
+          Math.random() * teamThemes.length
+        )
       ];
 
     /* =========================
        チーム名生成（重複防止）
     ========================= */
     const teamAData =
-      generateTeamName(captainA.baseName);
+      generateTeamName(
+        captainA.baseName
+      );
 
     const teamBData =
       generateTeamName(
@@ -189,8 +202,14 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden text-white">
-
+    <div
+      className="
+        relative
+        min-h-screen
+        overflow-hidden
+        text-white
+      "
+    >
       <ParticlesBackground variant={screen} />
 
       {/* HOME */}
@@ -214,13 +233,17 @@ export default function App() {
       )}
 
       {/* INTRO */}
-      {screen === "intro" && <IntroScreen />}
+      {screen === "intro" && (
+        <IntroScreen />
+      )}
 
       {/* CAPTAIN SLOT A */}
       {screen === "captainSlotA" && (
         <CaptainSlotScreen
           members={members}
-          finalCaptain={battleData.captains.a}
+          finalCaptain={
+            battleData.captains.a
+          }
           label="一人目のリーダーは.."
           color={battleData.theme?.a.text}
         />
@@ -239,7 +262,9 @@ export default function App() {
       {screen === "captainSlotB" && (
         <CaptainSlotScreen
           members={members}
-          finalCaptain={battleData.captains.b}
+          finalCaptain={
+            battleData.captains.b
+          }
           label="二人目のリーダーは.."
           color={battleData.theme?.b.text}
         />
@@ -257,16 +282,24 @@ export default function App() {
       {/* TEAM NAME */}
       {screen === "teamName" && (
         <TeamNameScreen
-          teamNames={battleData.teamNames}
+          teamNames={
+            battleData.teamNames
+          }
         />
       )}
 
       {/* DISTRIBUTION */}
       {screen === "distribution" && (
         <DistributionScreen
-          animatedTeams={battleData.teams}
-          teamNames={battleData.teamNames}
-          captains={battleData.captains}
+          animatedTeams={
+            battleData.teams
+          }
+          teamNames={
+            battleData.teamNames
+          }
+          captains={
+            battleData.captains
+          }
           theme={battleData.theme}
         />
       )}
@@ -280,17 +313,38 @@ export default function App() {
       {screen === "result" && (
         <ResultScreen
           teams={battleData.teams}
-          captains={battleData.captains}
-          teamNames={battleData.teamNames}
+          captains={
+            battleData.captains
+          }
+          teamNames={
+            battleData.teamNames
+          }
           theme={battleData.theme}
           startShuffle={startShuffle}
           setScreen={setScreen}
         />
       )}
 
+      {/* NAOKIN MODE */}
+      {screen === "naokin" && (
+        <NaokinScreen
+          teams={battleData.teams}
+          captains={
+            battleData.captains
+          }
+          teamNames={
+            battleData.teamNames
+          }
+          theme={battleData.theme}
+          setScreen={setScreen}
+        />
+      )}
+
       {/* ADMIN */}
       {screen === "admin" && (
-        <AdminScreen setScreen={setScreen} />
+        <AdminScreen
+          setScreen={setScreen}
+        />
       )}
     </div>
   );
