@@ -29,101 +29,125 @@ export default function IntroScreen() {
   }, []);
 
   return (
-    <div className="
-      relative
-      h-screen
-      overflow-hidden
-      flex
-      flex-col
-      items-center
-      justify-center
-      bg-black/20
-    ">
+    <div
+      className="
+        relative
+        h-screen
 
+        overflow-visible
+
+        flex
+        flex-col
+        items-center
+        justify-start
+
+        px-6
+        pt-20
+        pb-10
+
+        bg-black/20
+      "
+    >
       {/* =========================
          GRID BG
       ========================= */}
-      <div className="
-        absolute
-        inset-0
+      <div
+        className="
+          absolute
+          inset-0
 
-        opacity-[0.08]
+          opacity-[0.08]
 
-        bg-[linear-gradient(rgba(255,255,255,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.15)_1px,transparent_1px)]
+          bg-[linear-gradient(rgba(255,255,255,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.15)_1px,transparent_1px)]
 
-        bg-[size:40px_40px]
-      " />
+          bg-[size:40px_40px]
+        "
+      />
 
       {/* =========================
          SCAN LINE
       ========================= */}
-      <div className="
-        absolute
-        inset-0
-        overflow-hidden
-        pointer-events-none
-      ">
-
-        <div className="
+      <div
+        className="
           absolute
-          left-0
-          w-full
-          h-[2px]
+          inset-0
+          overflow-hidden
+          pointer-events-none
+        "
+      >
+        <div
+          className="
+            absolute
+            left-0
+            w-full
+            h-[2px]
 
-          bg-cyan-300/50
+            bg-cyan-300/50
 
-          animate-[scan_2.5s_linear_infinite]
+            animate-[scan_2.5s_linear_infinite]
 
-          shadow-[0_0_20px_rgba(34,211,238,0.8)]
-        " />
-
+            shadow-[0_0_20px_rgba(34,211,238,0.8)]
+          "
+        />
       </div>
 
       {/* =========================
          MAIN TITLE
       ========================= */}
-      <div className="
-        relative
-        z-10
+      <div
+        className="
+          relative
+          z-10
 
-        text-[110px]
-        leading-none
-        font-black
-        tracking-[12px]
+          text-center
 
-        text-cyan-300
+          text-[90px]
 
-        animate-pulse
+          leading-[1.35]
 
-        drop-shadow-[0_0_50px_rgba(34,211,238,0.9)]
-      ">
+          font-black
+          tracking-[12px]
+
+          text-cyan-300
+
+          animate-pulse
+
+          drop-shadow-[0_0_50px_rgba(34,211,238,0.9)]
+        "
+      >
         TEAM SHUFFLE
       </div>
 
       {/* =========================
          SUB
       ========================= */}
-      <div className="
-        mt-10
+      <div
+        className="
+          mt-6
 
-        text-2xl
-        tracking-[10px]
-        font-black
+          text-2xl
+          tracking-[10px]
+          font-black
 
-        text-slate-300
-      ">
+          text-slate-300
+        "
+      >
         SYSTEM ONLINE
       </div>
 
       {/* =========================
          STATUS
       ========================= */}
-      <div className="
-        mt-24
-        w-[700px]
-        space-y-6
-      ">
+      <div
+        className="
+          mt-16
 
+          w-full
+          max-w-[700px]
+
+          space-y-6
+        "
+      >
         {texts.map((text, index) => (
           <div
             key={text}
@@ -149,7 +173,6 @@ export default function IntroScreen() {
               }
             `}
           >
-
             {/* TEXT */}
             <div
               className={`
@@ -196,19 +219,23 @@ export default function IntroScreen() {
       {/* =========================
          LOADING BAR
       ========================= */}
-      <div className="
-        mt-16
-        w-[700px]
-        h-[18px]
+      <div
+        className="
+          mt-12
 
-        rounded-full
-        overflow-hidden
+          w-full
+          max-w-[700px]
 
-        bg-slate-800
-        border
-        border-white/10
-      ">
+          h-[18px]
 
+          rounded-full
+          overflow-hidden
+
+          bg-slate-800
+          border
+          border-white/10
+        "
+      >
         <div
           className="
             h-full
@@ -227,20 +254,21 @@ export default function IntroScreen() {
             width: `${((step + 1) / texts.length) * 100}%`,
           }}
         />
-
       </div>
 
       {/* =========================
          BOTTOM
       ========================= */}
-      <div className="
-        mt-10
+      <div
+        className="
+          mt-8
 
-        text-slate-500
-        text-sm
+          text-slate-500
+          text-sm
 
-        tracking-[6px]
-      ">
+          tracking-[6px]
+        "
+      >
         MATCHMAKING ENGINE v2.0
       </div>
 
@@ -260,7 +288,7 @@ export default function IntroScreen() {
           }
         `}
       </style>
-
     </div>
   );
 }
+

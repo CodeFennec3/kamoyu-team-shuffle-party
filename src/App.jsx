@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -23,6 +23,11 @@ export default function App() {
   const [screen, setScreen] = useState("home");
 
   const [members, setMembers] = useState([]);
+
+  /* =========================
+     BGM
+  ========================= */
+  const audioRef = useRef(null);
 
   /* =========================
      ローカル不参加管理
@@ -64,6 +69,53 @@ export default function App() {
     );
 
     return () => unsub();
+  }, []);
+
+  /* =========================
+     BGM 初期化
+  ========================= */
+  useEffect(() => {
+    const audio = new Audio(
+      "/music/teamshuffle.mp3"
+    );
+
+    audio.loop = true;
+
+    // 音量調整
+    audio.volume = 0.35;
+
+    audioRef.current = audio;
+
+    // 初回ユーザー操作で再生
+    const startAudio = () => {
+      audio
+        .play()
+        .catch((err) => {
+          console.log(
+            "BGM autoplay blocked:",
+            err
+          );
+        });
+
+      window.removeEventListener(
+        "click",
+        startAudio
+      );
+    };
+
+    window.addEventListener(
+      "click",
+      startAudio
+    );
+
+    return () => {
+      audio.pause();
+
+      window.removeEventListener(
+        "click",
+        startAudio
+      );
+    };
   }, []);
 
   /* ========================= */
@@ -206,7 +258,6 @@ export default function App() {
       className="
         relative
         min-h-screen
-        overflow-hidden
         text-white
       "
     >

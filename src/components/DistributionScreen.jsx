@@ -28,14 +28,16 @@ export default function DistributionScreen({
             size={74}
           />
 
-          <div className="
-            mt-3
-            text-lg
-            font-bold
-            text-center
-            max-w-[100px]
-            truncate
-          ">
+          <div
+            className="
+              mt-3
+              text-lg
+              font-bold
+              text-center
+              max-w-[100px]
+              truncate
+            "
+          >
             {m.baseName}
           </div>
         </div>
@@ -43,64 +45,76 @@ export default function DistributionScreen({
   };
 
   return (
-    <div className="
-      relative
-      min-h-screen
-      overflow-hidden
-      flex
-      items-center
-      justify-center
-      px-10
-    ">
+    <div
+      className="
+        relative
+        min-h-screen
 
+        overflow-y-auto
+        overflow-x-hidden
+
+        flex
+        items-start
+        justify-center
+
+        px-10
+        py-16
+      "
+    >
       {/* =========================
          LEFT GLOW
       ========================= */}
-      <div className="
-        absolute
-        left-[-220px]
-        top-1/2
-        -translate-y-1/2
+      <div
+        className="
+          absolute
+          left-[-220px]
+          top-1/2
+          -translate-y-1/2
 
-        w-[800px]
-        h-[800px]
+          w-[800px]
+          h-[800px]
 
-        rounded-full
-        bg-cyan-400/10
-        blur-[140px]
-      " />
+          rounded-full
+          bg-cyan-400/10
+          blur-[140px]
+        "
+      />
 
       {/* =========================
          RIGHT GLOW
       ========================= */}
-      <div className="
-        absolute
-        right-[-220px]
-        top-1/2
-        -translate-y-1/2
+      <div
+        className="
+          absolute
+          right-[-220px]
+          top-1/2
+          -translate-y-1/2
 
-        w-[800px]
-        h-[800px]
+          w-[800px]
+          h-[800px]
 
-        rounded-full
-        bg-violet-400/10
-        blur-[140px]
-      " />
+          rounded-full
+          bg-violet-400/10
+          blur-[140px]
+        "
+      />
 
       {/* =========================
          MAIN
       ========================= */}
-      <div className="
-        relative
-        z-10
-        w-full
+      <div
+        className="
+          relative
+          z-10
+          w-full
+          max-w-[1900px]
 
-        grid
-        grid-cols-[1fr_auto_1fr]
-        gap-10
-        items-center
-      ">
-
+          grid
+          grid-cols-[1fr_auto_1fr]
+          gap-10
+          items-start
+        "
+      >
         {/* =========================
            TEAM A
         ========================= */}
@@ -120,83 +134,97 @@ export default function DistributionScreen({
             shadow-[0_0_60px_rgba(0,0,0,0.5)]
           `}
         >
-
           {/* TEAM NAME */}
-          <div className={`
-            text-center
-            text-5xl
-            font-black
-            break-words
+          <div
+            className={`
+              text-center
+              text-5xl
+              font-black
+              break-words
 
-            ${theme?.a.text}
-            ${theme?.a.glow}
-          `}>
+              ${theme?.a.text}
+              ${theme?.a.glow}
+            `}
+          >
             {teamNames.a}
           </div>
 
           {/* LEADER */}
-          <div className="
-            mt-14
-            flex
-            flex-col
-            items-center
-          ">
-
-            <div className="
-              text-[70px]
-              leading-none
-              mb-2
-            ">
+          <div
+            className="
+              mt-14
+              flex
+              flex-col
+              items-center
+            "
+          >
+            <div
+              className="
+                text-[70px]
+                leading-none
+                mb-2
+              "
+            >
               👑
             </div>
 
-            <div className="
-              text-yellow-300
-              font-black
-              tracking-[6px]
-              mb-6
-            ">
+            <div
+              className="
+                text-yellow-300
+                font-black
+                tracking-[6px]
+                mb-6
+              "
+            >
               LEADER
             </div>
 
-            <div className="
-              relative
-              rounded-full
-              shadow-[0_0_100px_rgba(255,255,0,0.5)]
-            ">
+            <div
+              className="
+                relative
+                rounded-full
+                shadow-[0_0_100px_rgba(255,255,0,0.5)]
+              "
+            >
               <Avatar
                 src={captains.a?.avatar}
                 size={170}
               />
 
-              <div className="
-                absolute
-                inset-[-14px]
-                rounded-full
-                border-4
-                border-yellow-300/70
-                animate-pulse
-              " />
+              <div
+                className="
+                  absolute
+                  inset-[-14px]
+                  rounded-full
+                  border-4
+                  border-yellow-300/70
+                  animate-pulse
+                "
+              />
             </div>
 
-            <div className="
-              mt-6
-              text-4xl
-              font-black
-              text-center
-            ">
+            <div
+              className="
+                mt-6
+                text-4xl
+                font-black
+                text-center
+              "
+            >
               {captains.a?.baseName}
             </div>
           </div>
 
           {/* MEMBERS */}
-          <div className="
-            mt-16
-            flex
-            flex-wrap
-            justify-center
-            gap-8
-          ">
+          <div
+            className="
+              mt-16
+              flex
+              flex-wrap
+              justify-center
+              gap-8
+            "
+          >
             {renderMembers("a")}
           </div>
         </div>
@@ -204,25 +232,29 @@ export default function DistributionScreen({
         {/* =========================
            VS
         ========================= */}
-        <div className="
-          flex
-          items-center
-          justify-center
-        ">
+        <div
+          className="
+            flex
+            items-center
+            justify-center
 
-          <div className="
-            text-[150px]
-            leading-none
-            font-black
-            text-white
+            pt-[240px]
+          "
+        >
+          <div
+            className="
+              text-[150px]
+              leading-none
+              font-black
+              text-white
 
-            animate-pulse
+              animate-pulse
 
-            drop-shadow-[0_0_60px_rgba(255,255,255,1)]
-          ">
+              drop-shadow-[0_0_60px_rgba(255,255,255,1)]
+            "
+          >
             VS
           </div>
-
         </div>
 
         {/* =========================
@@ -244,83 +276,97 @@ export default function DistributionScreen({
             shadow-[0_0_60px_rgba(0,0,0,0.5)]
           `}
         >
-
           {/* TEAM NAME */}
-          <div className={`
-            text-center
-            text-5xl
-            font-black
-            break-words
+          <div
+            className={`
+              text-center
+              text-5xl
+              font-black
+              break-words
 
-            ${theme?.b.text}
-            ${theme?.b.glow}
-          `}>
+              ${theme?.b.text}
+              ${theme?.b.glow}
+            `}
+          >
             {teamNames.b}
           </div>
 
           {/* LEADER */}
-          <div className="
-            mt-14
-            flex
-            flex-col
-            items-center
-          ">
-
-            <div className="
-              text-[70px]
-              leading-none
-              mb-2
-            ">
+          <div
+            className="
+              mt-14
+              flex
+              flex-col
+              items-center
+            "
+          >
+            <div
+              className="
+                text-[70px]
+                leading-none
+                mb-2
+              "
+            >
               👑
             </div>
 
-            <div className="
-              text-yellow-300
-              font-black
-              tracking-[6px]
-              mb-6
-            ">
+            <div
+              className="
+                text-yellow-300
+                font-black
+                tracking-[6px]
+                mb-6
+              "
+            >
               LEADER
             </div>
 
-            <div className="
-              relative
-              rounded-full
-              shadow-[0_0_100px_rgba(255,255,0,0.5)]
-            ">
+            <div
+              className="
+                relative
+                rounded-full
+                shadow-[0_0_100px_rgba(255,255,0,0.5)]
+              "
+            >
               <Avatar
                 src={captains.b?.avatar}
                 size={170}
               />
 
-              <div className="
-                absolute
-                inset-[-14px]
-                rounded-full
-                border-4
-                border-yellow-300/70
-                animate-pulse
-              " />
+              <div
+                className="
+                  absolute
+                  inset-[-14px]
+                  rounded-full
+                  border-4
+                  border-yellow-300/70
+                  animate-pulse
+                "
+              />
             </div>
 
-            <div className="
-              mt-6
-              text-4xl
-              font-black
-              text-center
-            ">
+            <div
+              className="
+                mt-6
+                text-4xl
+                font-black
+                text-center
+              "
+            >
               {captains.b?.baseName}
             </div>
           </div>
 
           {/* MEMBERS */}
-          <div className="
-            mt-16
-            flex
-            flex-wrap
-            justify-center
-            gap-8
-          ">
+          <div
+            className="
+              mt-16
+              flex
+              flex-wrap
+              justify-center
+              gap-8
+            "
+          >
             {renderMembers("b")}
           </div>
         </div>
@@ -328,3 +374,4 @@ export default function DistributionScreen({
     </div>
   );
 }
+

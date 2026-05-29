@@ -1,7 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Shuffle } from "lucide-react";
 import Avatar from "./Avatar";
 import Title from "./Title";
+
+/* =========================
+   🎲 配列シャッフル
+========================= */
+function shuffleArray(array) {
+  const newArray = [...array];
+
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [newArray[i], newArray[j]] = [
+      newArray[j],
+      newArray[i],
+    ];
+  }
+
+  return newArray;
+}
 
 export default function LobbyScreen({
   members,
@@ -23,7 +41,14 @@ export default function LobbyScreen({
   }, []);
 
   /* =========================
-     ② フラッシュ演出
+     ② メンバー順ランダム化
+  ========================= */
+  const randomizedMembers = useMemo(() => {
+    return shuffleArray(members);
+  }, [members]);
+
+  /* =========================
+     ③ フラッシュ演出
   ========================= */
   const flash = () => {
     const el = document.createElement("div");
@@ -88,23 +113,23 @@ export default function LobbyScreen({
           grid-cols-2
           sm:grid-cols-3
           md:grid-cols-4
-          lg:grid-cols-6
-          xl:grid-cols-8
-          gap-10
+          lg:grid-cols-5
+          xl:grid-cols-6
+          gap-14
           px-10
           justify-items-center
         "
       >
 
-        {members.map((m, index) => {
+        {randomizedMembers.map((m, index) => {
           const inactive = inactiveIds.includes(m.id);
 
           return (
             <div
               key={m.id}
               className={`
-                w-[150px]
-                p-5
+                w-[240px]
+                p-7
                 rounded-3xl
                 bg-white/5
                 border border-cyan-400/20
@@ -132,7 +157,7 @@ export default function LobbyScreen({
 
               {/* avatar */}
               <div className="flex justify-center">
-                <div className="scale-125">
+                <div className="scale-[1.8]">
                   <Avatar src={m.avatar} />
                 </div>
               </div>
@@ -140,8 +165,8 @@ export default function LobbyScreen({
               {/* name */}
               <div
                 className="
-                  mt-5
-                  text-base
+                  mt-10
+                  text-2xl
                   font-black
                   text-white
                   text-center
@@ -155,11 +180,11 @@ export default function LobbyScreen({
               <button
                 onClick={() => toggleActive(m.id)}
                 className={`
-                  mt-5
+                  mt-8
                   w-full
-                  text-sm
+                  text-xl
                   font-black
-                  py-3
+                  py-4
                   rounded-2xl
                   transition
                   shadow-[0_0_20px_rgba(255,0,0,0.2)]
