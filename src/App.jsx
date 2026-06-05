@@ -29,6 +29,33 @@ export default function App() {
   ========================= */
   const audioRef = useRef(null);
 
+  const playNaokinBgm = () => {
+    if (!audioRef.current) return;
+
+    const naokinTracks = [
+      "/music/naokinminchi.mp3",
+      "/music/naokinminchi2.mp3",
+    ];
+
+    const randomTrack =
+      naokinTracks[
+        Math.floor(
+          Math.random() * naokinTracks.length
+        )
+      ];
+
+    audioRef.current.pause();
+
+    const audio = new Audio(randomTrack);
+
+    audio.loop = true;
+    audio.volume = 0.35;
+
+    audio.play().catch(console.error);
+
+    audioRef.current = audio;
+  };
+
   /* =========================
      ローカル不参加管理
   ========================= */
@@ -75,9 +102,19 @@ export default function App() {
      BGM 初期化
   ========================= */
   useEffect(() => {
-    const audio = new Audio(
-      "/music/teamshuffle.mp3"
-    );
+    const normalTracks = [
+      "/music/teamshuffle.mp3",
+      "/music/teamshuffle_rai.mp3",
+    ];
+
+    const randomTrack =
+      normalTracks[
+        Math.floor(
+          Math.random() * normalTracks.length
+        )
+      ];
+
+    const audio = new Audio(randomTrack);
 
     audio.loop = true;
 
@@ -364,15 +401,12 @@ export default function App() {
       {screen === "result" && (
         <ResultScreen
           teams={battleData.teams}
-          captains={
-            battleData.captains
-          }
-          teamNames={
-            battleData.teamNames
-          }
+          captains={battleData.captains}
+          teamNames={battleData.teamNames}
           theme={battleData.theme}
           startShuffle={startShuffle}
           setScreen={setScreen}
+          playNaokinBgm={playNaokinBgm}
         />
       )}
 

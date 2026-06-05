@@ -1,4 +1,4 @@
-import { Shuffle, Skull } from "lucide-react";
+import { Shuffle } from "lucide-react";
 import Avatar from "./Avatar";
 
 export default function ResultScreen({
@@ -8,6 +8,7 @@ export default function ResultScreen({
   theme,
   startShuffle,
   setScreen,
+  playNaokinBgm,
 }) {
   const renderMembers = (teamKey) => {
     return teams[teamKey]
@@ -426,48 +427,45 @@ export default function ResultScreen({
           ロビーへ戻る
         </button>
 
-        {/* NAOKIN */}
+        {/* NAOKIN MINCHI */}
         <button
-          onClick={() => setScreen("naokin")}
+          onClick={() => {
+            playNaokinBgm();
+            setScreen("naokin");
+          }}
           className="
             group
-
             px-14
             py-6
-
             rounded-[24px]
-
             text-3xl
             font-black
-
             inline-flex
             items-center
             gap-5
-
             bg-gradient-to-r
-            from-red-700
-            via-red-500
+            from-red-800
+            via-red-600
             to-orange-500
-
             hover:scale-110
             active:scale-95
-
             transition-all
             duration-300
-
-            shadow-[0_0_60px_rgba(255,0,0,0.6)]
+            shadow-[0_0_60px_rgba(255,0,0,0.8)]
           "
         >
-          <Skull
-            size={40}
+          <span
             className="
+              text-[42px]
               group-hover:rotate-12
               transition-all
               duration-300
             "
-          />
+          >
+            🥩
+          </span>
 
-          なおきん
+          なおきんミンチ
         </button>
       </div>
 

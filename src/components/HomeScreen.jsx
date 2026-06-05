@@ -426,6 +426,71 @@ export default function HomeScreen({
               "
             />
           </div>
+
+          {/* MR. ADULT */}
+          <div
+            className="
+              relative
+
+              px-8
+              py-4
+
+              border
+              border-yellow-400/40
+
+              bg-yellow-500/10
+
+              text-center
+
+              rotate-[2deg]
+
+              shadow-[0_0_50px_rgba(255,220,0,0.35)]
+            "
+          >
+            <div
+              className="
+                text-xs
+                tracking-[8px]
+                text-yellow-300
+              "
+            >
+              SPECIAL THANKS
+            </div>
+
+            <div
+              className="
+                mt-1
+
+                text-[24px]
+                font-black
+
+                tracking-[2px]
+
+                text-white
+
+                drop-shadow-[0_0_20px_rgba(255,220,0,0.9)]
+              "
+            >
+              Mr. Adult 桜井リュンリュン
+            </div>
+
+            <div
+              className="
+                absolute
+                -top-[2px]
+                left-0
+
+                w-full
+                h-[2px]
+
+                bg-gradient-to-r
+                from-transparent
+                via-yellow-400
+                to-transparent
+              "
+            />  
+          </div>
+
         </div>
       </div>
     </div>
